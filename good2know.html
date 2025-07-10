@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Loading...</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body,
+      html {
+        height: 100%;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        overflow: hidden;
+      }
+
+      .loading-container {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* background-image: url("https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80"); */
+        background-image: url("./loader.jpeg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+      }
+
+      .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          135deg,
+          rgba(0, 0, 0, 0.6),
+          rgba(0, 0, 0, 0.4)
+        );
+        z-index: 1;
+      }
+
+      .loading-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        color: white;
+        padding: 20px;
+        max-width: 90%;
+        width: 100%;
+      }
+
+      .loading-text {
+        font-size: 1.5rem;
+        font-weight: 300;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+        letter-spacing: 0.5px;
+      }
+
+      .loading-bar-container {
+        width: 100%;
+        max-width: 400px;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 2px;
+        overflow: hidden;
+        margin: 0 auto;
+        position: relative;
+      }
+
+      .loading-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        border-radius: 2px;
+        width: 0%;
+        animation: loadingProgress 3s ease-in-out forwards;
+        position: relative;
+      }
+
+      .loading-bar::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.4),
+          transparent
+        );
+        animation: shimmer 1.5s infinite;
+      }
+
+      .loading-percentage {
+        font-size: 0.9rem;
+        margin-top: 1rem;
+        opacity: 0.8;
+        font-weight: 300;
+      }
+
+      @keyframes loadingProgress {
+        0% {
+          width: 0%;
+        }
+        100% {
+          width: 100%;
+        }
+      }
+
+      @keyframes shimmer {
+        0% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(100%);
+        }
+      }
+
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+
+      .fade-out {
+        animation: fadeOut 0.5s ease-in-out forwards;
+      }
+
+      /* Mobile-first responsive design */
+      @media (max-width: 480px) {
+        .loading-text {
+          font-size: 1.2rem;
+          margin-bottom: 1.5rem;
+        }
+
+        .loading-bar-container {
+          max-width: 280px;
+        }
+
+        .loading-content {
+          padding: 15px;
+        }
+      }
+
+      @media (min-width: 481px) and (max-width: 768px) {
+        .loading-text {
+          font-size: 1.4rem;
+        }
+
+        .loading-bar-container {
+          max-width: 350px;
+        }
+      }
+
+      @media (min-width: 769px) {
+        .loading-text {
+          font-size: 1.6rem;
+        }
+
+        .loading-bar-container {
+          max-width: 450px;
+        }
+      }
+
+      @media (min-width: 1200px) {
+        .loading-text {
+          font-size: 1.8rem;
+        }
+
+        .loading-bar-container {
+          max-width: 500px;
+        }
+      }
+
+      /* Landscape orientation adjustments */
+      @media (orientation: landscape) and (max-height: 500px) {
+        .loading-text {
+          font-size: 1.1rem;
+          margin-bottom: 1rem;
+        }
+
+        .loading-content {
+          padding: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="loading-container">
+      <div class="overlay"></div>
+      <div class="loading-content">
+        <div class="loading-text">Loading...</div>
+        <div class="loading-bar-container">
+          <div class="loading-bar"></div>
+        </div>
+        <div class="loading-percentage" id="percentage">0%</div>
+      </div>
+    </div>
+
+    <script>
+      // Update percentage counter
+      let progress = 0;
+      const percentageElement = document.getElementById("percentage");
+
+      const updateProgress = () => {
+        progress += 1;
+        percentageElement.textContent = progress + "%";
+
+        if (progress < 100) {
+          setTimeout(updateProgress, 30);
+        }
+      };
+
+      // Start progress counter
+      setTimeout(updateProgress, 100);
+
+      // Redirect after 3 seconds with fade out effect
+      setTimeout(() => {
+        document.querySelector(".loading-container").classList.add("fade-out");
+
+        setTimeout(() => {
+          window.location.href =
+            "https://www.canva.com/design/DAGou8qWNU4/MQ_XvglOV_HX4jHBXdXzSA/view?utm_content=DAGou8qWNU4&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h452d070fa4";
+        }, 500);
+      }, 3000);
+    </script>
+  </body>
+</html>
